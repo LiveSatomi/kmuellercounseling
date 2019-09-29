@@ -1,15 +1,23 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
+let fs = require('fs');
+let path = require('path');
 
-exports.get = function(event, context, callback) {
-  var contents = fs.readFileSync(`public${path.sep}index.html`);
-  var result = {
-    statusCode: 200,
-    body: contents.toString(),
-    headers: {'content-type': 'text/html'}
-  };
+exports.servePage = function (event, context, callback) {
+    let resourcePath = event["resource"];
 
-  callback(null, result);
+    // Permit root resource
+    if (resourcePath === "/") {
+        resourcePath = "/index.html"
+    }
+    let contents = fs.readFileSync(`public${path.sep}${resourcePath}`);
+    let body = contents.toString();
+
+    let result = {
+        statusCode: 200,
+        body: body,
+        headers: {'content-type': 'text/html'}
+    };
+
+    callback(null, result);
 };
