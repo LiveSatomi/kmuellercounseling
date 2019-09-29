@@ -7,7 +7,7 @@ exports.servePage = function (event, context, callback) {
     let resourcePath = event["resource"];
 
     // Permit root resource
-    if (resourcePath === "/") {
+    if (resourcePath === undefined || resourcePath === "/") {
         resourcePath = "/index.html"
     }
     let contents = fs.readFileSync(`public${path.sep}${resourcePath}`);
