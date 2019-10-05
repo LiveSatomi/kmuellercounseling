@@ -7,4 +7,4 @@ The awscli as "aws" on the path
 
 The aws sam cli.
 
-nodejs 8.10 or later
+nodejs version 8
