@@ -105,17 +105,14 @@ Resources:
   SiteCodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: SiteCodeBuild
-      ServiceRole: !GetAtt SiteCodeBuildRole.Arn
       Artifacts:
-        Type: CODEPIPELINE
-        Name: SiteArtifact
-      Source:
         Type: CODEPIPELINE
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
+        Image: "aws/codebuild/standard:2.0"
         Type: LINUX_CONTAINER
-        Image: "aws/codebuild/nodejs:8.11.0"
+      Name: SiteCodeBuild
+      ServiceRole: !GetAtt SiteCodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
   SiteCodeBuildRole:
