@@ -20,7 +20,7 @@ Resources:
     Properties:
       BucketName: jackomueller-site
       WebsiteConfiguration:
-        IndexDcoument: index.html
+        IndexDocument: index.html
   SitePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -111,6 +111,11 @@ Resources:
         Type: CODEPIPELINE
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
+        EnvironmentVariables:
+          -
+            Name: DEPLOY_BUCKET
+            Type: PLAINTEXT
+            Value: !Ref SiteBucket
         Image: "aws/codebuild/standard:2.0"
         Type: LINUX_CONTAINER
       Name: SiteCodeBuild
