@@ -19,6 +19,8 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: jackomueller-site
+      WebsiteConfiguration:
+        IndexDcoument: index.html
   SitePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
