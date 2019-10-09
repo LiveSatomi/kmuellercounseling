@@ -1,0 +1,168 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Defines resources for a react-scripts app with continuous deployment. The code is hosted by GitHub, built as a static site with CodePipeline, stored in S3, served by API Gateway through Lambda with help from Cloudfront.
+Parameters:
+  ProjectSource:
+    Type: String
+    Description: "Github URL"
+  GithubOwner:
+    Type: String
+    Description: "Github repo owner"
+  GithubRepo:
+    Type: String
+    Description: "Github repo name"
+  GithubOAuthToken:
+    Type: String
+    Description: "Github personal access token"
+    NoEcho: true
+Resources:
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: jackomueller-site
+  SitePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Location: !Ref PipelineArtifactBucket
+        Type: S3
+      Name: String
+      RoleArn: !GetAtt SitePipelineRole.Arn
+      Stages:
+        -
+          Name: SourceStage
+          Actions:
+            -
+              Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: 1
+              OutputArtifacts:
+                -
+                  Name: jackomueller-site
+              Configuration:
+                Owner: !Ref GithubOwner
+                Repo: !Ref GithubRepo
+                Branch: createReactApp
+                OAuthToken: !Ref GithubOAuthToken
+        -
+          Name: BuildStage
+          Actions:
+            -
+              Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              InputArtifacts:
+                -
+                  Name: jackomueller-site
+              OutputArtifacts:
+                -
+                  Name: jackomueller-site-build
+              Configuration:
+                ProjectName: !Ref SiteCodeBuild
+  SitePipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - "codepipeline.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: SiteCodePipelinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:GetBucketVersioning"
+                  - "s3:PutObject"
+                Resource:
+                  - !GetAtt PipelineArtifactBucket.Arn
+                  - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
+              -
+                Effect: Allow
+                Action:
+                  - "codebuild:BatchGetBuilds"
+                  - "codebuild:StartBuild"
+                Resource: "*"
+  PipelineArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: jackomueller-site-artifact
+  SiteCodeBuild:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: SiteCodeBuild
+      ServiceRole: !GetAtt SiteCodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+        Name: SiteArtifact
+      Source:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Type: LINUX_CONTAINER
+        Image: "aws/codebuild/nodejs:8.11.0"
+      Source:
+        Type: CODEPIPELINE
+  SiteCodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "codebuild.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: SiteCodeBuildPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:GetBucketVersioning"
+                  - "s3:PutObject"
+                Resource:
+                  - !GetAtt PipelineArtifactBucket.Arn
+                  - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
+              -
+                Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:GetBucketVersioning"
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                Resource:
+                  - !GetAtt SiteBucket.Arn
+                  - !Join ['', [!GetAtt SiteBucket.Arn, "/*"]]
+              -
+                Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "cloudfront:CreateInvalidation"
+                Resource:
+                  - "*"
