@@ -46,7 +46,7 @@ Resources:
               Configuration:
                 Owner: !Ref GithubOwner
                 Repo: !Ref GithubRepo
-                Branch: createReactApp
+                Branch: master
                 OAuthToken: !Ref GithubOAuthToken
         -
           Name: BuildStage
@@ -121,6 +121,7 @@ Resources:
       Name: SiteCodeBuild
       ServiceRole: !GetAtt SiteCodeBuildRole.Arn
       Source:
+        BuildSpec: buildspec.yaml
         Type: CODEPIPELINE
   SiteCodeBuildRole:
     Type: AWS::IAM::Role
