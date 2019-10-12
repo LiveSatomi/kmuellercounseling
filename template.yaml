@@ -18,7 +18,11 @@ Resources:
   SiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: jackomueller-site
+      BucketName:
+        Fn::Join:
+          - "-"
+          - - !Ref GithubRepo
+            - "site"
       WebsiteConfiguration:
         IndexDocument: index.html
   SitePipeline:
@@ -27,43 +31,36 @@ Resources:
       ArtifactStore:
         Location: !Ref PipelineArtifactBucket
         Type: S3
-      Name: String
+      Name: SitePipeline
       RoleArn: !GetAtt SitePipelineRole.Arn
       Stages:
-        -
-          Name: SourceStage
+        - Name: SourceStage
           Actions:
-            -
-              Name: SourceAction
+            - Name: SourceAction
               ActionTypeId:
                 Category: Source
                 Owner: ThirdParty
                 Provider: GitHub
-                Version: 1
+                Version: "1"
               OutputArtifacts:
-                -
-                  Name: jackomueller-site
+                - Name: jackomueller-site
               Configuration:
                 Owner: !Ref GithubOwner
                 Repo: !Ref GithubRepo
                 Branch: master
                 OAuthToken: !Ref GithubOAuthToken
-        -
-          Name: BuildStage
+        - Name: BuildStage
           Actions:
-            -
-              Name: BuildAction
+            - Name: BuildAction
               ActionTypeId:
                 Category: Build
                 Owner: AWS
-                Version: 1
+                Version: "1"
                 Provider: CodeBuild
               InputArtifacts:
-                -
-                  Name: jackomueller-site
+                - Name: jackomueller-site
               OutputArtifacts:
-                -
-                  Name: jackomueller-site-build
+                - Name: jackomueller-site-build
               Configuration:
                 ProjectName: !Ref SiteCodeBuild
   SitePipelineRole:
@@ -72,8 +69,7 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          -
-            Effect: Allow
+          - Effect: Allow
             Principal:
               Service:
                 - "codepipeline.amazonaws.com"
@@ -84,8 +80,7 @@ Resources:
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              -
-                Effect: Allow
+              - Effect: Allow
                 Action:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
@@ -94,8 +89,7 @@ Resources:
                 Resource:
                   - !GetAtt PipelineArtifactBucket.Arn
                   - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
-              -
-                Effect: Allow
+              - Effect: Allow
                 Action:
                   - "codebuild:BatchGetBuilds"
                   - "codebuild:StartBuild"
@@ -112,8 +106,7 @@ Resources:
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         EnvironmentVariables:
-          -
-            Name: DEPLOY_BUCKET
+          - Name: DEPLOY_BUCKET
             Type: PLAINTEXT
             Value: !Ref SiteBucket
         Image: "aws/codebuild/standard:2.0"
@@ -129,8 +122,7 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          -
-            Effect: "Allow"
+          - Effect: "Allow"
             Principal:
               Service:
                 - "codebuild.amazonaws.com"
@@ -141,8 +133,7 @@ Resources:
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              -
-                Effect: Allow
+              - Effect: Allow
                 Action:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
@@ -151,8 +142,7 @@ Resources:
                 Resource:
                   - !GetAtt PipelineArtifactBucket.Arn
                   - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
-              -
-                Effect: Allow
+              - Effect: Allow
                 Action:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
@@ -162,8 +152,7 @@ Resources:
                 Resource:
                   - !GetAtt SiteBucket.Arn
                   - !Join ['', [!GetAtt SiteBucket.Arn, "/*"]]
-              -
-                Effect: Allow
+              - Effect: Allow
                 Action:
                   - "logs:CreateLogGroup"
                   - "logs:CreateLogStream"
