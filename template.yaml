@@ -14,14 +14,18 @@ Parameters:
     Type: String
     Description: "Github personal access token"
     NoEcho: true
+  ProjectName:
+    Type: String
+    Description: "Prefix of AWS resources"
+    AllowedPattern: "[a-z0-9][a-z0-9-]{1,50}"
 Resources:
   SiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName:
+      BucketName: &resourceName
         Fn::Join:
-          - "-"
-          - - !Ref GithubRepo
+          - &delimiter "-"
+          - - Ref: ProjectName
             - "site"
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -29,40 +33,72 @@ Resources:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       ArtifactStore:
-        Location: !Ref PipelineArtifactBucket
+        Location:
+          Ref: PipelineArtifactBucket
         Type: S3
-      Name: SitePipeline
-      RoleArn: !GetAtt SitePipelineRole.Arn
+      Name: *resourceName
+      RoleArn:
+        Fn::GetAtt:
+          - SitePipelineRole
+          - Arn
       Stages:
-        - Name: SourceStage
+        - Name:
+            Fn::Join:
+              - *delimiter
+              - - *resourceName
+                - "source-stage"
           Actions:
-            - Name: SourceAction
+            - Name:
+                Fn::Join:
+                  - *delimiter
+                  - - *resourceName
+                    - "source-action"
               ActionTypeId:
                 Category: Source
                 Owner: ThirdParty
                 Provider: GitHub
                 Version: "1"
               OutputArtifacts:
-                - Name: jackomueller-site
+                - Name: &sourceArtifact
+                    Fn::Join:
+                      - *delimiter
+                      - - *resourceName
+                        - "source-artifact"
               Configuration:
-                Owner: !Ref GithubOwner
-                Repo: !Ref GithubRepo
+                Owner:
+                  Ref: GithubOwner
+                Repo:
+                  Ref: GithubRepo
                 Branch: master
-                OAuthToken: !Ref GithubOAuthToken
-        - Name: BuildStage
+                OAuthToken:
+                  Ref: GithubOAuthToken
+        - Name:
+            Fn::Join:
+              - *delimiter
+              - - *resourceName
+                - "build-stage"
           Actions:
-            - Name: BuildAction
+            - Name:
+                Fn::Join:
+                  - *delimiter
+                  - - *resourceName
+                    - "build-action"
               ActionTypeId:
                 Category: Build
                 Owner: AWS
                 Version: "1"
                 Provider: CodeBuild
               InputArtifacts:
-                - Name: jackomueller-site
+                - Name: *sourceArtifact
               OutputArtifacts:
-                - Name: jackomueller-site-build
+                - Name:
+                    Fn::Join:
+                      - *delimiter
+                      - - *resourceName
+                        - "build-artifact"
               Configuration:
-                ProjectName: !Ref SiteCodeBuild
+                ProjectName:
+                  Ref: SiteCodeBuild
   SitePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -87,8 +123,15 @@ Resources:
                   - "s3:GetBucketVersioning"
                   - "s3:PutObject"
                 Resource:
-                  - !GetAtt PipelineArtifactBucket.Arn
-                  - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
+                  - Fn::GetAtt:
+                      - PipelineArtifactBucket
+                      - Arn
+                  - Fn::Join:
+                    - ''
+                    - - Fn::GetAtt:
+                        - PipelineArtifactBucket
+                        - Arn
+                      - /*
               - Effect: Allow
                 Action:
                   - "codebuild:BatchGetBuilds"
@@ -97,7 +140,11 @@ Resources:
   PipelineArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: jackomueller-site-artifact
+      BucketName:
+        Fn::Join:
+          - *delimiter
+          - - *resourceName
+            - "pipeline-artifact"
   SiteCodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -108,11 +155,15 @@ Resources:
         EnvironmentVariables:
           - Name: DEPLOY_BUCKET
             Type: PLAINTEXT
-            Value: !Ref SiteBucket
+            Value:
+              Ref: SiteBucket
         Image: "aws/codebuild/standard:2.0"
         Type: LINUX_CONTAINER
       Name: SiteCodeBuild
-      ServiceRole: !GetAtt SiteCodeBuildRole.Arn
+      ServiceRole:
+        Fn::GetAtt:
+          - SiteCodeBuildRole
+          - Arn
       Source:
         BuildSpec: buildspec.yaml
         Type: CODEPIPELINE
@@ -140,8 +191,15 @@ Resources:
                   - "s3:GetBucketVersioning"
                   - "s3:PutObject"
                 Resource:
-                  - !GetAtt PipelineArtifactBucket.Arn
-                  - !Join ['', [!GetAtt PipelineArtifactBucket.Arn, "/*"]]
+                  - Fn::GetAtt:
+                    - PipelineArtifactBucket
+                    - Arn
+                  - Fn::Join:
+                        - ''
+                        - - Fn::GetAtt:
+                            - PipelineArtifactBucket
+                            - Arn
+                          - /*
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
@@ -150,8 +208,15 @@ Resources:
                   - "s3:PutObject"
                   - "s3:PutObjectAcl"
                 Resource:
-                  - !GetAtt SiteBucket.Arn
-                  - !Join ['', [!GetAtt SiteBucket.Arn, "/*"]]
+                  - Fn::GetAtt:
+                      - SiteBucket
+                      - Arn
+                  - Fn::Join:
+                      - ''
+                      - - Fn::GetAtt:
+                            - SiteBucket
+                            - Arn
+                        - /*
               - Effect: Allow
                 Action:
                   - "logs:CreateLogGroup"
