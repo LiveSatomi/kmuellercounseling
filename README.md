@@ -1,5 +1,6 @@
-#Jack O. Mueller
-##Personal Site
+# Jack O. Mueller - Personal Site
+
+This site houses an About Me section and resume.
 
 ## Development
 ### Dependencies
@@ -8,7 +9,7 @@ Local Dependencies
 * nodejs version 8
 
 AWS Hosted Dependencies
-* Store a secret in AWS Secret manager of the form `prod/$GithubRepo/github` with a key of `oauth` whose value is the OAuth key granting access to the GithubRepo. If the secret name or key name should be something different, change them in template.yaml.
+* Store a secret in AWS Secret manager of the form `prod/$GithubRepo/github` ($GithubRepo is the CloudFormation Parameter) with a key of `oauth` whose value is the OAuth key granting access to the GithubRepo. If the secret name or key name should be something different, change them in template.yaml.
 
 ### Deployment
 Push the project to GitHub, generate an OAuth token and save it as a secret as described in the Dependencies section.
