@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Defines resources for a react-scripts app with continuous deployment. The code is hosted by GitHub, built as a static site with CodePipeline, stored in S3, served by API Gateway through Lambda with help from Cloudfront.
+Description: Defines resources for a react-scripts app with continuous deployment. The code is hosted by GitHub, built as a static site with CodePipeline, stored and hosted by in S3.
 Parameters:
   ProjectSource:
     Type: String
@@ -10,10 +10,6 @@ Parameters:
   GithubRepo:
     Type: String
     Description: "Github repo name"
-  GithubOAuthToken:
-    Type: String
-    Description: "Github personal access token"
-    NoEcho: true
   ProjectName:
     Type: String
     Description: "Prefix of AWS resources"
@@ -71,7 +67,11 @@ Resources:
                   Ref: GithubRepo
                 Branch: master
                 OAuthToken:
-                  Ref: GithubOAuthToken
+                  Fn::Join:
+                    - ""
+                    - - "{{resolve:secretsmanager:prod/"
+                      - Ref: GithubRepo
+                      - "/github:SecretString:oauth}}"
         - Name:
             Fn::Join:
               - *delimiter
