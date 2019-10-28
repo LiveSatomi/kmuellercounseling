@@ -8,7 +8,8 @@ phases:
       - npm install
   build:
     commands:
-      - npm run test
+      - "echo $CI"
+      - CI=true npm run test
       - npm run build
   post_build:
     commands:
