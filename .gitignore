@@ -30,7 +30,7 @@ npm-debug.log*
 /.pnp
 .pnp.js
 
-# testing
+# jest
 /coverage
 
 # production
