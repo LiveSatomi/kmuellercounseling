@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from "classnames";
 import { ClassValue } from "classnames/types";
 
 const createBEM = (namespace: string) => {
@@ -17,12 +17,12 @@ const createBEM = (namespace: string) => {
                 },
                 m: (className: ClassValue, ...more: ClassValue[]) => {
                     return classNames(`${block}--${className}`, more);
-                },
+                }
             };
-        },
+        }
     };
 };
 
-const bemNames = createBEM('jm');
+const bemNames = createBEM("jm");
 
 export default bemNames;
