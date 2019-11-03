@@ -16,7 +16,10 @@
     "typescript": "3.6.3"
   },
   "devDependencies": {
-    "js-yaml": "^3.13.1"
+    "husky": "^3.0.9",
+    "js-yaml": "^3.13.1",
+    "lint-staged": "^9.4.2",
+    "prettier": "1.18.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,6 +47,17 @@
     "collectCoverageFrom": [
       "src/**/*.tsx",
       "!src/index.tsx"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{tsx,scss}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
