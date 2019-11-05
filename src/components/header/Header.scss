@@ -1,5 +1,8 @@
 @import "theme";
 
-.Header {
-    color: $primary;
+.jm-Header {
+    &__wordmark {
+        width: 120px;
+        height: auto;
+    }
 }

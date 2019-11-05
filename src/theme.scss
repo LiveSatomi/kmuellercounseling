@@ -1,8 +1,3 @@
-$primary: #007bff !default;
+$primary: #82d173 !default;
 
-// Import required bootstrap modules
-@import "../node_modules/bootstrap/scss/functions";
-@import "../node_modules/bootstrap/scss/variables";
-@import "../node_modules/bootstrap/scss/mixins";
-
-// Import optional bootstrap modules
+@import "~bootstrap";
