@@ -1,18 +1,18 @@
 import React from "react";
-import "./Header.scss";
+import "./Navigation.scss";
 import bemNames from "util/bemnames";
 import { Nav, Navbar } from "react-bootstrap";
 
-type HeaderProps = {
+type NavigationProps = {
     wordmark: string;
 };
 
-const bem = bemNames.create("Header");
+const bem = bemNames.create("Navigation");
 
-class Header extends React.Component<HeaderProps> {
+class Navigation extends React.Component<NavigationProps> {
     render() {
         return (
-            <Navbar>
+            <Navbar className={bem.b()} variant={"light"}>
                 <Navbar.Brand href="/">
                     <img
                         className={bem.e("wordmark")}
@@ -20,8 +20,7 @@ class Header extends React.Component<HeaderProps> {
                         src={this.props.wordmark}
                     />
                 </Navbar.Brand>
-
-                <Nav>
+                <Nav className={bem.e("navlist")}>
                     <Nav.Link href="/">About</Nav.Link>
                     <Nav.Link href="/projects">Projects</Nav.Link>
                 </Nav>
@@ -30,4 +29,4 @@ class Header extends React.Component<HeaderProps> {
     }
 }
 
-export default Header;
+export default Navigation;

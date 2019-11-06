@@ -1,8 +1,12 @@
 @import "theme";
 
-.jm-Header {
+.jm-Navigation {
     &__wordmark {
         width: 120px;
         height: auto;
+    }
+
+    &__navlist {
+        @extend .ml-auto;
     }
 }
