@@ -4,9 +4,30 @@
     &__wordmark {
         width: 120px;
         height: auto;
+        @extend .d-none;
+        @include media-breakpoint-up(md) {
+            @extend .d-md-block;
+        }
     }
 
     &__navlist {
+        @extend .mr-auto;
+        @include media-breakpoint-up(md) {
+            @extend .mr-md-0;
+        }
         @extend .ml-auto;
+    }
+
+    &__name {
+        @include media-breakpoint-up(md) {
+            @extend .d-md-none;
+        }
+    }
+
+    &__about {
+        @extend .d-none;
+        @include media-breakpoint-up(md) {
+            @extend .d-md-block;
+        }
     }
 }

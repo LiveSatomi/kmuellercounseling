@@ -21,7 +21,12 @@ class Navigation extends React.Component<NavigationProps> {
                     />
                 </Navbar.Brand>
                 <Nav className={bem.e("navlist")}>
-                    <Nav.Link href="/">About</Nav.Link>
+                    <Nav.Link className={bem.e("name")} href="/">
+                        Jack
+                    </Nav.Link>
+                    <Nav.Link className={bem.e("about")} href="/">
+                        About
+                    </Nav.Link>
                     <Nav.Link href="/projects">Projects</Nav.Link>
                 </Nav>
             </Navbar>
