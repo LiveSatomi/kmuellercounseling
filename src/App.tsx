@@ -3,6 +3,7 @@ import Navigation from "./components/navigation/Navigation";
 import wordmark from "brand/wordmark.png";
 import Profile from "./components/profile/Profile";
 import { Col, Container, Row } from "react-bootstrap";
+import Personal from "./components/personal/Personal";
 
 const App: React.FC = () => {
     return (
@@ -16,7 +17,9 @@ const App: React.FC = () => {
                 <Col xs={12} md={4}>
                     <Profile name={"Jack Mueller"} />
                 </Col>
-                <Col xs={12} md={8}></Col>
+                <Col xs={12} md={8}>
+                    <Personal />
+                </Col>
             </Row>
         </Container>
     );
