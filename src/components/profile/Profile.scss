@@ -1,6 +1,9 @@
 @import "theme";
 
 .jm-Profile {
-    &__name {
+    text-align: center;
+
+    &__picture {
+        @extend .col-12;
     }
 }

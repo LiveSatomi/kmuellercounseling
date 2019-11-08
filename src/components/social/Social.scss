@@ -1,0 +1,9 @@
+@import "theme";
+
+.jm-Social {
+    @extend .py-2;
+
+    &__mark {
+        @extend .pr-3;
+    }
+}

@@ -8,7 +8,7 @@ const bem = bemNames.create("Personal");
 
 class Personal extends React.Component<PersonalProps> {
     render() {
-        return <p>Hello, world!</p>;
+        return <p className={bem.b()}>Hello, world!</p>;
     }
 }
 
