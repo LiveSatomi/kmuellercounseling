@@ -12,7 +12,7 @@ const bem = bemNames.create("Personal");
 class Personal extends React.Component<PersonalProps> {
     static defaultProps = {
         seekingEmploymentSince: null,
-        employer: null
+        employer: null,
     };
 
     render() {
@@ -48,7 +48,7 @@ class Personal extends React.Component<PersonalProps> {
     getEmploymentLine() {
         if (this.props.seekingEmploymentSince == null) {
             return (
-                <p>
+                <p className={bem.e("line")}>
                     {this.getEmployerPhrase() == null
                         ? ""
                         : this.getEmployerPhrase() + " "}{" "}
@@ -57,7 +57,7 @@ class Personal extends React.Component<PersonalProps> {
             );
         } else {
             return (
-                <p>
+                <p className={bem.e("line") + " " + bem.em("line", "cta")}>
                     I'm seeking employment since{" "}
                     {this.props.seekingEmploymentSince.toLocaleDateString()}.
                     Check out my resume or GitHub, or send me an email.

@@ -17,9 +17,19 @@ const createBEM = (namespace: string) => {
                 },
                 m: (className: ClassValue, ...more: ClassValue[]) => {
                     return classNames(`${block}--${className}`, more);
-                }
+                },
+                em: (
+                    className: ClassValue,
+                    modifierName: ClassValue,
+                    ...more: ClassValue[]
+                ) => {
+                    return classNames(
+                        `${block}__${className}--${modifierName}`,
+                        more
+                    );
+                },
             };
-        }
+        },
     };
 };
 

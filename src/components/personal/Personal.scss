@@ -1,4 +1,16 @@
 @import "theme";
 
 .jm-Personal {
+    &__line {
+        font: {
+            family: serif;
+            size: x-large;
+        }
+
+        &--cta {
+            font: {
+                weight: bold;
+            }
+        }
+    }
 }
