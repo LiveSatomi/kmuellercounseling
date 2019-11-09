@@ -19,7 +19,10 @@ const App: React.FC = () => {
                     <Profile name={"Jack Mueller"} picture={profile} />
                 </Col>
                 <Col xs={12} md={8}>
-                    <Personal />
+                    <Personal
+                        seekingEmploymentSince={new Date()}
+                        employer={"Kapsch TrafficCom"}
+                    />
                 </Col>
             </Row>
         </Container>
