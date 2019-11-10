@@ -1,7 +1,7 @@
 import React from "react";
 import "./Profile.scss";
 import bemNames from "util/bemnames";
-import Social, { github, linkedin } from "components/social/Social";
+import Social, { email, github, linkedin } from "components/social/Social";
 
 type ProfileProps = {
     name: string;
@@ -20,6 +20,11 @@ class Profile extends React.Component<ProfileProps> {
                     src={this.props.picture}
                 />
                 <h2>{this.props.name}</h2>
+                <Social
+                    handle={"mueller.o.jack@gmail.com"}
+                    type={email}
+                    link={"mailto:mueller.o.jack@gmail.com"}
+                />
                 <Social
                     handle={"Jack Mueller"}
                     type={linkedin}

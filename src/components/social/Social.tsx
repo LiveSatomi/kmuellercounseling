@@ -4,6 +4,7 @@ import "./Social.scss";
 // TODO resolve these images dynamically
 import githubMark from "./image/githubMark.png";
 import linkedinMark from "./image/linkedinMark.png";
+import emailMark from "./image/emailMark.png";
 
 type SocialProps = {
     handle: string;
@@ -39,7 +40,8 @@ class Social extends React.Component<SocialProps> {
 export const github: SocialNetwork = { network: "GitHub", mark: githubMark };
 export const linkedin: SocialNetwork = {
     network: "LinkedIn",
-    mark: linkedinMark
+    mark: linkedinMark,
 };
+export const email: SocialNetwork = { network: "Mail", mark: emailMark };
 
 export default Social;
