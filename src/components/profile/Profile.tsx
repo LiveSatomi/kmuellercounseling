@@ -19,7 +19,7 @@ class Profile extends React.Component<ProfileProps> {
                     alt={this.props.name}
                     src={this.props.picture}
                 />
-                <h2>{this.props.name}</h2>
+                <h2 className={bem.e("name")}>{this.props.name}</h2>
                 <Social
                     handle={"mueller.o.jack@gmail.com"}
                     type={email}

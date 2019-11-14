@@ -5,5 +5,12 @@
 
     &__picture {
         @extend .col-12;
+        @extend .pb-2;
+    }
+
+    &__name {
+        font: {
+            size: 2.5rem;
+        }
     }
 }

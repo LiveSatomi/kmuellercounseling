@@ -2,8 +2,10 @@
 
 .jm-Social {
     @extend .py-2;
+    white-space: nowrap;
+    font-size: x-large;
 
-    &__mark {
-        @extend .pr-3;
+    &__handle {
+        @extend .pl-3;
     }
 }

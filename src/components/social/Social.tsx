@@ -23,13 +23,13 @@ class Social extends React.Component<SocialProps> {
     render() {
         return (
             <div className={bem.b()}>
+                <img
+                    className={bem.e("mark")}
+                    src={this.props.type.mark}
+                    alt={this.props.type.network + " mark"}
+                />
                 <a href={this.props.link}>
-                    <img
-                        className={bem.e("mark")}
-                        src={this.props.type.mark}
-                        alt={this.props.type + " mark"}
-                    />
-                    <span>{this.props.handle}</span>
+                    <span className={bem.e("handle")}>{this.props.handle}</span>
                 </a>
             </div>
         );
