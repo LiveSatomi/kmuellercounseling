@@ -1,36 +1,20 @@
 import React from "react";
-import Navigation from "./components/navigation/Navigation";
-import wordmark from "brand/wordmark.png";
-import profile from "brand/profile.png";
-import Profile from "./components/profile/Profile";
-import { Col, Container, Row } from "react-bootstrap";
-import Personal from "./components/personal/Personal";
-import "App.scss";
-import bemNames from "./util/bemnames";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.scss";
+import Home from "components/home/Home";
+import Projects from "components/projects/Projects";
 
-const bem = bemNames.create("App");
-
-const App: React.FC = () => {
+export default function App() {
     return (
-        <Container>
-            <Row>
-                <Col xs={12}>
-                    <Navigation wordmark={wordmark} />
-                </Col>
-            </Row>
-            <Row className={bem.e("content")}>
-                <Col className={bem.e("profile")}>
-                    <Profile name={"Jack Mueller"} picture={profile} />
-                </Col>
-                <Col className={bem.e("personal")}>
-                    <Personal
-                        seekingEmploymentSince={new Date()}
-                        employer={"Kapsch TrafficCom"}
-                    />
-                </Col>
-            </Row>
-        </Container>
+        <Router>
+            <Switch>
+                <Route path="/projects">
+                    <Projects />
+                </Route>
+                <Route path="/">
+                    <Home />
+                </Route>
+            </Switch>
+        </Router>
     );
-};
-
-export default App;
+}

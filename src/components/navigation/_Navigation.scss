@@ -1,33 +1,37 @@
-@import "theme";
+@import "themeFunctions";
 
 .jm-Navigation {
     &__wordmark {
         width: 120px;
         height: auto;
-        @extend .d-none;
+        display: none;
         @include media-breakpoint-up(md) {
-            @extend .d-md-block;
+            display: block;
         }
     }
 
     &__navlist {
-        @extend .mr-auto;
-        @include media-breakpoint-up(md) {
-            @extend .mr-md-0;
+        margin: {
+            right: auto;
+            left: auto;
         }
-        @extend .ml-auto;
+        @include media-breakpoint-up(md) {
+            margin: {
+                right: 0;
+            }
+        }
     }
 
     &__name {
         @include media-breakpoint-up(md) {
-            @extend .d-md-none;
+            display: none;
         }
     }
 
     &__about {
-        @extend .d-none;
+        display: none;
         @include media-breakpoint-up(md) {
-            @extend .d-md-block;
+            display: block;
         }
     }
 }

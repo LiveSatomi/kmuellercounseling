@@ -1,5 +1,5 @@
 import React from "react";
-import "./Navigation.scss";
+import "./_Navigation.scss";
 import bemNames from "util/bemnames";
 import { Nav, Navbar } from "react-bootstrap";
 

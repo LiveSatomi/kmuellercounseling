@@ -1,5 +1,5 @@
 import React from "react";
-import "./Personal.scss";
+import "./_Personal.scss";
 import bemNames from "util/bemnames";
 
 type PersonalProps = {
@@ -60,7 +60,15 @@ class Personal extends React.Component<PersonalProps> {
                 <p className={bem.e("line") + " " + bem.em("line", "cta")}>
                     I'm seeking employment since{" "}
                     {this.props.seekingEmploymentSince.toLocaleDateString()}.
-                    Check out my resume or GitHub, or send me an email.
+                    Check out my{" "}
+                    <a
+                        href={
+                            process.env.PUBLIC_URL + "jack-mueller-resume.pdf"
+                        }
+                    >
+                        resume
+                    </a>{" "}
+                    or GitHub, or send me an email.
                 </p>
             );
         }

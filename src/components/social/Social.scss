@@ -1,11 +1,16 @@
-@import "theme";
+@import "themeFunctions";
 
 .jm-Social {
-    @extend .py-2;
+    padding: {
+        bottom: map-get($spacers, 2);
+        top: map-get($spacers, 2);
+    }
     white-space: nowrap;
     font-size: x-large;
 
     &__handle {
-        @extend .pl-3;
+        padding: {
+            left: map-get($spacers, 3);
+        }
     }
 }

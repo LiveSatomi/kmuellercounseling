@@ -1,5 +1,5 @@
 import React from "react";
-import "./Profile.scss";
+import "./_Profile.scss";
 import bemNames from "util/bemnames";
 import Social, { email, github, linkedin } from "components/social/Social";
 
