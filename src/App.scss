@@ -1,3 +1,5 @@
+@import "theme";
+
 .jm-App {
     &__content {
         justify-content: center;
@@ -5,5 +7,12 @@
 
     &__profile {
         flex-grow: 0;
+        flex-basis: 33%;
+    }
+
+    &__personal {
+        // Make sure the content row wraps before getting to narrow
+        flex-basis: 67%;
+        flex-shrink: 0;
     }
 }
