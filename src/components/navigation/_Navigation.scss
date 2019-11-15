@@ -11,6 +11,8 @@
     }
 
     &__navlist {
+        font-size: 2.5rem;
+
         margin: {
             right: auto;
             left: auto;
@@ -18,6 +20,13 @@
         @include media-breakpoint-up(md) {
             margin: {
                 right: 0;
+            }
+        }
+
+        a {
+            padding: {
+                left: map-get($spacers, 4);
+                right: map-get($spacers, 4);
             }
         }
     }
