@@ -20,7 +20,7 @@ const Home: React.FC = () => {
             </Row>
             <Row className={bem.e("content")}>
                 <Col className={bem.e("profile")}>
-                    <Profile name={"Jack Mueller"} picture={profile} />
+                    <Profile name={"Kathleen Mueller"} picture={profile} />
                 </Col>
                 <Col className={bem.e("personal")}>
                     <Personal

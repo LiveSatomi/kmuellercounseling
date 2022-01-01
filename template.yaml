@@ -1,18 +1,15 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Defines resources for a react-scripts app with continuous deployment. The code is hosted by GitHub, built as a static site with CodePipeline, stored and hosted by in S3.
+Description: Defines resources for a react-scripts app with continuous deployment. The code is hosted by GitHub, built as a static site with CodePipeline, stored and hosted with S3.
 Parameters:
-  ProjectSource:
-    Type: String
-    Description: "Github URL"
-  GithubOwner:
-    Type: String
-    Description: "Github repo owner"
   GithubRepo:
     Type: String
-    Description: "Github repo name"
+    Description: "Full Github repo name"
+  GithubBranch:
+    Type: String
+    Description: "Github branch name to detect changes"
   ProjectName:
     Type: String
-    Description: "Prefix of AWS resources"
+    Description: "Prefix for generated AWS resources"
     AllowedPattern: "[a-z0-9][a-z0-9-]{1,50}"
 Resources:
   SiteBucket:
@@ -51,8 +48,8 @@ Resources:
                     - "source-action"
               ActionTypeId:
                 Category: Source
-                Owner: ThirdParty
-                Provider: GitHub
+                Owner: AWS
+                Provider: CodeStarSourceConnection
                 Version: "1"
               OutputArtifacts:
                 - Name: &sourceArtifact
@@ -61,17 +58,12 @@ Resources:
                       - - *resourceName
                         - "source-artifact"
               Configuration:
-                Owner:
-                  Ref: GithubOwner
-                Repo:
+                ConnectionArn:
+                  Ref: PipelineSourceConnection
+                FullRepositoryId:
                   Ref: GithubRepo
-                Branch: master
-                OAuthToken:
-                  Fn::Join:
-                    - ""
-                    - - "{{resolve:secretsmanager:prod/"
-                      - Ref: GithubRepo
-                      - "/github:SecretString:oauth}}"
+                BranchName:
+                  Ref: GithubBranch
         - Name:
             Fn::Join:
               - *delimiter
@@ -137,6 +129,19 @@ Resources:
                   - "codebuild:BatchGetBuilds"
                   - "codebuild:StartBuild"
                 Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "codestar-connections:UseConnection"
+                Resource: "*"
+  PipelineSourceConnection:
+    Type: AWS::CodeStarConnections::Connection
+    Properties:
+      ConnectionName:
+        Fn::Join:
+          - *delimiter
+          - - *resourceName
+            - "source"
+      ProviderType: GitHub
   PipelineArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -159,7 +164,11 @@ Resources:
               Ref: SiteBucket
         Image: "aws/codebuild/standard:2.0"
         Type: LINUX_CONTAINER
-      Name: SiteCodeBuild
+      Name:
+        Fn::Join:
+          - *delimiter
+          - - *resourceName
+            - "site-code-build"
       ServiceRole:
         Fn::GetAtt:
           - SiteCodeBuildRole

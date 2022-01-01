@@ -1,6 +1,4 @@
-# Jack O. Mueller - Personal Site
-
-This site houses an About Me section and resume.
+# Site repository for kmuellercounseling.com
 
 ## Development
 ### Dependencies
@@ -9,11 +7,12 @@ Local Dependencies
 * nodejs version 8
 
 AWS Hosted Dependencies
-* Store a secret in AWS Secret manager of the form `prod/$GithubRepo/github` ($GithubRepo is the CloudFormation Parameter) with a key of `oauth` whose value is the OAuth key granting access to the GithubRepo. If the secret name or key name should be something different, change them in template.yaml.
+When cloudformation-deploy.sh is first run, it will create a PENDING connection that can be viewed in the Developer Tools section of the AWS Console. See https://console.aws.amazon.com/codesuite/settings/connections.
+Update the pending connection to complete the Oauth handshake between AWS and the Github organization or user that has permission to read from the repo defined in the CloudFormation paramter $GithubRepo.
 
 ### Deployment
-Push the project to GitHub, generate an OAuth token and save it as a secret as described in the Dependencies section.
+Push the project to GitHub, note the repository name and organization. Use them to edit cloudformation-deploy.sh.
 
 Run cloudformation-deploy.sh to deploy the project to AWS. The first run will create the necessary AWS resources. Running the script again is only required if `template.yaml` is updated.
 
-To make updates to the app, simply push code to the master branch of the repository. The branch to watch can be changed in `template.yaml`.
+To release updates to the deployed app, first make sure the generated connection is Available, then push commits to the branch defined in the CloudFormation parameter $GithubBranch.

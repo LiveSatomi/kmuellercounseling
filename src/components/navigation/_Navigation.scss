@@ -11,7 +11,7 @@
     }
 
     &__navlist {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
 
         margin: {
             right: auto;
@@ -31,16 +31,6 @@
         }
     }
 
-    &__name {
-        @include media-breakpoint-up(md) {
-            display: none;
-        }
-    }
-
     &__about {
-        display: none;
-        @include media-breakpoint-up(md) {
-            display: block;
-        }
     }
 }

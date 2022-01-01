@@ -1,5 +1,5 @@
 {
-    "name": "jackomueller",
+    "name": "kmuellercounseling",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -22,6 +22,7 @@
         "@types/classnames": "^2.2.9",
         "husky": "^3.0.9",
         "js-yaml": "^3.13.1",
+        "json-schema-to-typescript": "^8.2.0",
         "lint-staged": "^9.4.2",
         "prettier": "1.18.2"
     },

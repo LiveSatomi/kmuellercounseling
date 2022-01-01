@@ -19,67 +19,25 @@ class Personal extends React.Component<PersonalProps> {
         return (
             <div className={bem.b()}>
                 <p className={bem.e("line")}>
-                    I'm a software developer from Lawrenceville just outside of
-                    Atlanta, Georgia.
+                    Today you are one step closer to a new you where you feel
+                    empowered and on a positive path to growth and well-being.
+                    As a therapist with a client centered and strength based
+                    approach, my goal is to help you uncover your true potential
+                    and lead a life that is worth celebrating. While we can't
+                    change difficult situations of the past, we can work
+                    together to better understand and resolve challenges in your
+                    life. By applying complementary therapy approaches and
+                    techniques, we will unearth long-standing behavior patterns
+                    or negative perceptions that may be holding you back from
+                    experiencing a more fulfilling and meaningful life. If
+                    you're looking for extra support and guidance through a
+                    challenging situation or you're just ready to move in a new
+                    direction in your life, I look forward to working with you
+                    to achieve your goals. Please call or email me for an
+                    individual, couples or family therapy consultation today.
                 </p>
-
-                <p className={bem.e("line")}>
-                    I graduated from Georgia Tech with a B.S. in Computer
-                    Science in 2017, and have been writing software since then.
-                </p>
-
-                <p className={bem.e("line")}>
-                    I'm fluent in Java, but experienced in other languages and
-                    all parts of the software stack. I have the fundamentals to
-                    work in any language.
-                </p>
-
-                <p className={bem.e("line")}>
-                    I pride myself on doing things the 'right' way, and making
-                    sure I understand the implications of how I'm building
-                    something while I build it.
-                </p>
-
-                {this.getEmploymentLine()}
             </div>
         );
-    }
-
-    getEmploymentLine() {
-        if (this.props.seekingEmploymentSince == null) {
-            return (
-                <p className={bem.e("line")}>
-                    {this.getEmployerPhrase() == null
-                        ? ""
-                        : this.getEmployerPhrase() + " "}{" "}
-                    Check out my resume, or projects hosted here and on GitHub.
-                </p>
-            );
-        } else {
-            return (
-                <p className={bem.e("line") + " " + bem.em("line", "cta")}>
-                    I'm seeking employment since{" "}
-                    {this.props.seekingEmploymentSince.toLocaleDateString()}.
-                    Check out my{" "}
-                    <a
-                        href={
-                            process.env.PUBLIC_URL + "jack-mueller-resume.pdf"
-                        }
-                    >
-                        resume
-                    </a>{" "}
-                    or GitHub, or send me an email.
-                </p>
-            );
-        }
-    }
-
-    getEmployerPhrase() {
-        if (this.props.employer == null) {
-            return null;
-        } else {
-            return "I'm currently employed at " + this.props.employer + ".";
-        }
     }
 }
 
