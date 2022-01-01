@@ -4,7 +4,6 @@ import "./Social.scss";
 // TODO resolve these images dynamically
 import githubMark from "./image/githubMark.png";
 import linkedinMark from "./image/linkedinMark.png";
-import facebookMark from "./image/facebookMark.png";
 import emailMark from "./image/emailMark.png";
 
 type SocialProps = {
@@ -39,10 +38,7 @@ class Social extends React.Component<SocialProps> {
 
 // Networks that have logomarks internal to the component.
 export const github: SocialNetwork = { network: "GitHub", mark: githubMark };
-export const facebook: SocialNetwork = {
-    network: "Facebook",
-    mark: facebookMark,
-};
+
 export const linkedin: SocialNetwork = {
     network: "LinkedIn",
     mark: linkedinMark,

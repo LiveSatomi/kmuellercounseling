@@ -1,7 +1,7 @@
 import React from "react";
 import "./_Profile.scss";
 import bemNames from "util/bemnames";
-import Social, { email, facebook, linkedin } from "components/social/Social";
+import Social, { email, linkedin } from "components/social/Social";
 
 type ProfileProps = {
     name: string;
@@ -32,13 +32,13 @@ class Profile extends React.Component<ProfileProps> {
                         "https://www.linkedin.com/in/kathleen-mueller-ma-lpc-94640282/"
                     }
                 />
-                <Social
-                    handle={"LiveSatomi"}
-                    type={facebook}
-                    link={
-                        "https://www.facebook.com/kathleenmuellercounseling/timeline"
-                    }
-                />
+                {/*<Social*/}
+                {/*    handle={"LiveSatomi"}*/}
+                {/*    type={facebook}*/}
+                {/*    link={*/}
+                {/*        "https://www.facebook.com/kathleenmuellercounseling/timeline"*/}
+                {/*    }*/}
+                {/*/>*/}
             </div>
         );
     }
