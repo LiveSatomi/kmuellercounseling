@@ -114,10 +114,8 @@ Resources:
                   - "s3:GetObjectVersion"
                   - "s3:GetBucketVersioning"
                   - "s3:PutObject"
+                  - "s3:PutObjectAcl"
                 Resource:
-                  - Fn::GetAtt:
-                      - PipelineArtifactBucket
-                      - Arn
                   - Fn::Join:
                     - ''
                     - - Fn::GetAtt:
