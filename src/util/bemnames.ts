@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ClassValue } from "classnames/types";
+import { Argument as ClassValue } from "classnames/bind";
 
 const createBEM = (namespace: string) => {
     return {

@@ -4,12 +4,12 @@ import wordmark from "brand/wordmark.png";
 import profile from "brand/profile.png";
 import Profile from "components/profile/Profile";
 import { Col, Container, Row } from "react-bootstrap";
-import "./_Home.scss";
+import "./_Appointment.scss";
 import bemNames from "util/bemnames";
 
-const bem = bemNames.create("Home");
+const bem = bemNames.create("Appointment");
 
-const Home: React.FC = () => {
+const Appointment: React.FC = () => {
     return (
         <Container>
             <Row>
@@ -21,10 +21,10 @@ const Home: React.FC = () => {
                 <Col className={bem.e("profile")}>
                     <Profile name={"Kathleen Mueller"} picture={profile} />
                 </Col>
-                <Col className={bem.e("line")}>
+                <Col className={bem.e("about")}>
                     <p>
                         Today you are one step closer to a new you where you
-                        feel empowered and on a positive path to growth and
+                        feela empowered and on a positive path to growth and
                         well-being. As a therapist with a client centered and
                         strength based approach, my goal is to help you uncover
                         your true potential and lead a life that is worth
@@ -48,4 +48,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default Appointment;

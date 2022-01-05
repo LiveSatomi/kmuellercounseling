@@ -1,16 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Home from "components/home/Home";
+import Services from "components/services/Services";
+import Appointment from "components/appointment/Appointment";
 
 export default function App() {
     return (
         <Router>
-            <Switch>
-                <Route path="/">
-                    <Home />
-                </Route>
-            </Switch>
+            <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/services" element={<Services />}></Route>
+                <Route path="/appointment" element={<Appointment />}></Route>
+            </Routes>
         </Router>
     );
 }
