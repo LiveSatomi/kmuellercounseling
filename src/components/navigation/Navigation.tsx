@@ -16,7 +16,7 @@ class Navigation extends React.Component<NavigationProps> {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className={bem.e("navlist")}>
-                        <Nav.Link className={bem.e("about")} href="/">
+                        <Nav.Link className={bem.e("about")} href="index.html">
                             Home
                         </Nav.Link>
                         <Nav.Link
