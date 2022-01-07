@@ -1,0 +1,18 @@
+[
+  {
+    "Condition": {
+      "HttpErrorCodeReturnedEquals": "403"
+    },
+    "Redirect": {
+      "ReplaceKeyPrefixWith": "#!/"
+    }
+  },
+  {
+    "Condition": {
+      "HttpErrorCodeReturnedEquals": "404"
+    },
+    "Redirect": {
+      "ReplaceKeyPrefixWith": "#!/"
+    }
+  }
+]
