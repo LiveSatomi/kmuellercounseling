@@ -33,6 +33,7 @@ class Profile extends React.Component<ProfileProps> {
                     }
                 />
                 <p>License #5721</p>
+                <p>Phone 843-343-9519</p>
 
                 {/*<Social*/}
                 {/*    handle={"LiveSatomi"}*/}
