@@ -32,6 +32,8 @@ class Profile extends React.Component<ProfileProps> {
                         "https://www.linkedin.com/in/kathleen-mueller-ma-lpc-94640282/"
                     }
                 />
+                <p>License #5721</p>
+
                 {/*<Social*/}
                 {/*    handle={"LiveSatomi"}*/}
                 {/*    type={facebook}*/}
