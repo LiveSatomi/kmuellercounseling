@@ -23,7 +23,7 @@ const Services: React.FC = () => {
                 </Col>
                 <Col className={bem.e("line")}>
                     <h2>Services & Rates</h2>
-                    <p>Providing individual, couples and family counseling.</p>
+                    <p>Providing individual and family counseling.</p>
 
                     <p>Treatment specialization includes:</p>
 
@@ -39,8 +39,7 @@ const Services: React.FC = () => {
                     <p>
                         I work with a wide range of emotional and behavioral
                         issues providing services ranging from depression and
-                        anxiety counseling to addiction and recovery to couples
-                        counseling and beyond. In a comfortable and supportive
+                        anxiety counseling to addiction and recovery. In a comfortable and supportive
                         atmosphere, I offer a highly personalized approach
                         tailored to your individual needs to help attain your
                         personal growth potential.
