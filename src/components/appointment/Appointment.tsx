@@ -1,51 +1,206 @@
-import React from "react";
+import React, { ElementType } from "react";
 import Navigation from "components/navigation/Navigation";
 import wordmark from "brand/wordmark.png";
 import profile from "brand/profile.png";
 import Profile from "components/profile/Profile";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./_Appointment.scss";
 import bemNames from "util/bemnames";
+import { ErrorMessage, Field, FieldProps, Formik, useField } from "formik";
 
 const bem = bemNames.create("Appointment");
 
-const Appointment: React.FC = () => {
-    return (
-        <Container>
-            <Row>
-                <Col xs={12}>
-                    <Navigation wordmark={wordmark} />
-                </Col>
-            </Row>
-            <Row className={bem.e("content")}>
-                <Col className={bem.e("profile")}>
-                    <Profile name={"Kathleen Mueller"} picture={profile} />
-                </Col>
-                <Col className={bem.e("about")}>
-                    <p>
-                        Today you are one step closer to a new you where you
-                        feela empowered and on a positive path to growth and
-                        well-being. As a therapist with a client centered and
-                        strength based approach, my goal is to help you uncover
-                        your true potential and lead a life that is worth
-                        celebrating. While we can't change difficult situations
-                        of the past, we can work together to better understand
-                        and resolve challenges in your life. By applying
-                        complementary therapy approaches and techniques, we will
-                        unearth long-standing behavior patterns or negative
-                        perceptions that may be holding you back from
-                        experiencing a more fulfilling and meaningful life. If
-                        you're looking for extra support and guidance through a
-                        challenging situation or you're just ready to move in a
-                        new direction in your life, I look forward to working
-                        with you to achieve your goals. Please call or email me
-                        for an individual, couples or family therapy
-                        consultation today.
-                    </p>
-                </Col>
-            </Row>
-        </Container>
-    );
+type AppointmentProps = {};
+const FORM_NAME = "name";
+const FORM_EMAIL = "email";
+const FORM_PHONE = "phone";
+const FORM_MESSAGE: string = "message";
+type FormFields = {
+    name: string;
+    email?: string;
+    phone?: string;
+    message?: string;
 };
+class Appointment extends React.Component<AppointmentProps> {
+    formValues: FormFields = {
+        [FORM_NAME]: "",
+        [FORM_EMAIL]: "",
+        [FORM_PHONE]: "",
+        [FORM_MESSAGE]: "",
+    };
+
+    sendEmail(name: string, email?: string, phone?: string, message?: string) {
+        console.log(
+            "call api gateway:\nname: " + name,
+            "\nemail: " + email + "\nmessage: " + message
+        );
+    }
+
+    render() {
+        return (
+            <Container>
+                <Row>
+                    <Col xs={12}>
+                        <Navigation wordmark={wordmark} />
+                    </Col>
+                </Row>
+                <Row className={bem.e("content")}>
+                    <Col className={bem.e("profile")}>
+                        <Profile name={"Kathleen Mueller"} picture={profile} />
+                    </Col>
+                    <Col className={bem.e("appointment")}>
+                        <Formik
+                            initialValues={{
+                                [FORM_NAME]: "",
+                                [FORM_EMAIL]: "",
+                                [FORM_PHONE]: "",
+                                [FORM_MESSAGE]: "",
+                            }}
+                            validate={values => {
+                                const errors: { [key: string]: string } = {};
+                                if (!values[FORM_NAME]) {
+                                    errors[FORM_NAME] = "Required";
+                                }
+                                if (
+                                    !values[FORM_EMAIL] &&
+                                    !values[FORM_PHONE]
+                                ) {
+                                    errors[FORM_EMAIL] =
+                                        "Email or Phone is required";
+                                    errors[FORM_PHONE] =
+                                        "Email or Phone is required";
+                                }
+                                const maxMessageLength: number = 10000;
+                                if (
+                                    values[FORM_MESSAGE].length >
+                                    maxMessageLength
+                                ) {
+                                    errors[FORM_MESSAGE] =
+                                        "Max message length is " +
+                                        maxMessageLength +
+                                        " characters";
+                                }
+                                return errors;
+                            }}
+                            onSubmit={(values, { setSubmitting }) => {
+                                this.sendEmail(
+                                    values.name,
+                                    values.email,
+                                    values.phone,
+                                    values.message
+                                );
+                                setSubmitting(false);
+                            }}
+                        >
+                            {formLibrary => (
+                                <Form onSubmit={formLibrary.handleSubmit}>
+                                    <Field name={FORM_NAME}>
+                                        {() => (
+                                            <Form.Group
+                                                className="mb-5"
+                                                controlId={FORM_NAME}
+                                            >
+                                                <Form.Label>
+                                                    Full Name
+                                                </Form.Label>
+
+                                                <ErrorMessage name={FORM_NAME}>
+                                                    {message => (
+                                                        <p>{message}</p>
+                                                    )}
+                                                </ErrorMessage>
+                                                <Form.Control
+                                                    autoComplete={"no"}
+                                                    {...formLibrary.getFieldProps(
+                                                        FORM_NAME
+                                                    )}
+                                                />
+                                            </Form.Group>
+                                        )}
+                                    </Field>
+
+                                    <Field name={FORM_EMAIL}>
+                                        {() => (
+                                            <Form.Group
+                                                className="mb-3"
+                                                controlId={FORM_EMAIL}
+                                            >
+                                                <Form.Label>Email</Form.Label>
+                                                <ErrorMessage name={FORM_EMAIL}>
+                                                    {message => (
+                                                        <p>{message}</p>
+                                                    )}
+                                                </ErrorMessage>
+                                                <Form.Control
+                                                    {...formLibrary.getFieldProps(
+                                                        FORM_EMAIL
+                                                    )}
+                                                />
+                                            </Form.Group>
+                                        )}
+                                    </Field>
+
+                                    <Field name={FORM_PHONE}>
+                                        {() => (
+                                            <Form.Group
+                                                className="mb-3"
+                                                controlId={FORM_PHONE}
+                                            >
+                                                <Form.Label>Phone</Form.Label>
+                                                <ErrorMessage name={FORM_PHONE}>
+                                                    {message => (
+                                                        <p>{message}</p>
+                                                    )}
+                                                </ErrorMessage>
+                                                <Form.Control
+                                                    {...formLibrary.getFieldProps(
+                                                        FORM_PHONE
+                                                    )}
+                                                />
+                                            </Form.Group>
+                                        )}
+                                    </Field>
+
+                                    <Field name={FORM_MESSAGE}>
+                                        {() => (
+                                            <Form.Group
+                                                className="mb-3"
+                                                controlId={FORM_MESSAGE}
+                                            >
+                                                <Form.Label>Message</Form.Label>
+                                                <ErrorMessage
+                                                    name={FORM_MESSAGE}
+                                                >
+                                                    {message => (
+                                                        <p>{message}</p>
+                                                    )}
+                                                </ErrorMessage>
+                                                <Form.Control
+                                                    {...formLibrary.getFieldProps(
+                                                        FORM_MESSAGE
+                                                    )}
+                                                    as={"textarea"}
+                                                    rows={4}
+                                                />
+                                            </Form.Group>
+                                        )}
+                                    </Field>
+
+                                    <Button
+                                        variant="primary"
+                                        type="submit"
+                                        disabled={formLibrary.isSubmitting}
+                                    >
+                                        Submit
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
+}
 
 export default Appointment;
