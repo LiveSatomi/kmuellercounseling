@@ -1,4 +1,4 @@
-import React, { ElementType } from "react";
+import React from "react";
 import Navigation from "components/navigation/Navigation";
 import wordmark from "brand/wordmark.png";
 import profile from "brand/profile.png";
@@ -6,7 +6,8 @@ import Profile from "components/profile/Profile";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./_Appointment.scss";
 import bemNames from "util/bemnames";
-import { ErrorMessage, Field, FieldProps, Formik, useField } from "formik";
+import { Formik } from "formik";
+import FormField from "../FormField/FormField";
 
 const bem = bemNames.create("Appointment");
 
@@ -49,22 +50,21 @@ class Appointment extends React.Component<AppointmentProps> {
                         <Profile name={"Kathleen Mueller"} picture={profile} />
                     </Col>
                     <Col className={bem.e("appointment")}>
+                        <h2>Appointment Request</h2>
+                        <p>
+                            To schedule an individual, children, or family
+                            therapy appointment or to obtain additional
+                            information about any of these counseling services,
+                            please fill out the form below or give me a call.
+                        </p>
                         <Formik
-                            initialValues={{
-                                [FORM_NAME]: "",
-                                [FORM_EMAIL]: "",
-                                [FORM_PHONE]: "",
-                                [FORM_MESSAGE]: "",
-                            }}
+                            initialValues={this.formValues}
                             validate={values => {
                                 const errors: { [key: string]: string } = {};
-                                if (!values[FORM_NAME]) {
+                                if (!values.name) {
                                     errors[FORM_NAME] = "Required";
                                 }
-                                if (
-                                    !values[FORM_EMAIL] &&
-                                    !values[FORM_PHONE]
-                                ) {
+                                if (!values.email && !values.phone) {
                                     errors[FORM_EMAIL] =
                                         "Email or Phone is required";
                                     errors[FORM_PHONE] =
@@ -72,8 +72,10 @@ class Appointment extends React.Component<AppointmentProps> {
                                 }
                                 const maxMessageLength: number = 10000;
                                 if (
-                                    values[FORM_MESSAGE].length >
-                                    maxMessageLength
+                                    values.message === undefined
+                                        ? 0
+                                        : values.message.length >
+                                          maxMessageLength
                                 ) {
                                     errors[FORM_MESSAGE] =
                                         "Max message length is " +
@@ -94,97 +96,32 @@ class Appointment extends React.Component<AppointmentProps> {
                         >
                             {formLibrary => (
                                 <Form onSubmit={formLibrary.handleSubmit}>
-                                    <Field name={FORM_NAME}>
-                                        {() => (
-                                            <Form.Group
-                                                className="mb-5"
-                                                controlId={FORM_NAME}
-                                            >
-                                                <Form.Label>
-                                                    Full Name
-                                                </Form.Label>
-
-                                                <ErrorMessage name={FORM_NAME}>
-                                                    {message => (
-                                                        <p>{message}</p>
-                                                    )}
-                                                </ErrorMessage>
-                                                <Form.Control
-                                                    autoComplete={"no"}
-                                                    {...formLibrary.getFieldProps(
-                                                        FORM_NAME
-                                                    )}
-                                                />
-                                            </Form.Group>
-                                        )}
-                                    </Field>
-
-                                    <Field name={FORM_EMAIL}>
-                                        {() => (
-                                            <Form.Group
-                                                className="mb-3"
-                                                controlId={FORM_EMAIL}
-                                            >
-                                                <Form.Label>Email</Form.Label>
-                                                <ErrorMessage name={FORM_EMAIL}>
-                                                    {message => (
-                                                        <p>{message}</p>
-                                                    )}
-                                                </ErrorMessage>
-                                                <Form.Control
-                                                    {...formLibrary.getFieldProps(
-                                                        FORM_EMAIL
-                                                    )}
-                                                />
-                                            </Form.Group>
-                                        )}
-                                    </Field>
-
-                                    <Field name={FORM_PHONE}>
-                                        {() => (
-                                            <Form.Group
-                                                className="mb-3"
-                                                controlId={FORM_PHONE}
-                                            >
-                                                <Form.Label>Phone</Form.Label>
-                                                <ErrorMessage name={FORM_PHONE}>
-                                                    {message => (
-                                                        <p>{message}</p>
-                                                    )}
-                                                </ErrorMessage>
-                                                <Form.Control
-                                                    {...formLibrary.getFieldProps(
-                                                        FORM_PHONE
-                                                    )}
-                                                />
-                                            </Form.Group>
-                                        )}
-                                    </Field>
-
-                                    <Field name={FORM_MESSAGE}>
-                                        {() => (
-                                            <Form.Group
-                                                className="mb-3"
-                                                controlId={FORM_MESSAGE}
-                                            >
-                                                <Form.Label>Message</Form.Label>
-                                                <ErrorMessage
-                                                    name={FORM_MESSAGE}
-                                                >
-                                                    {message => (
-                                                        <p>{message}</p>
-                                                    )}
-                                                </ErrorMessage>
-                                                <Form.Control
-                                                    {...formLibrary.getFieldProps(
-                                                        FORM_MESSAGE
-                                                    )}
-                                                    as={"textarea"}
-                                                    rows={4}
-                                                />
-                                            </Form.Group>
-                                        )}
-                                    </Field>
+                                    <FormField
+                                        fieldName={FORM_NAME}
+                                        fieldLabel={"Family or Individual Name"}
+                                        formLibrary={formLibrary}
+                                    />
+                                    <FormField
+                                        fieldName={FORM_EMAIL}
+                                        fieldLabel={"Primary Email"}
+                                        controlProps={{ type: "email" }}
+                                        formLibrary={formLibrary}
+                                    />
+                                    <FormField
+                                        fieldName={FORM_PHONE}
+                                        fieldLabel={"Primary Phone"}
+                                        controlProps={{ type: "phone" }}
+                                        formLibrary={formLibrary}
+                                    />
+                                    <FormField
+                                        fieldName={FORM_MESSAGE}
+                                        fieldLabel={"Your Message"}
+                                        controlProps={{
+                                            as: "textarea",
+                                            rows: 4,
+                                        }}
+                                        formLibrary={formLibrary}
+                                    />
 
                                     <Button
                                         variant="primary"
