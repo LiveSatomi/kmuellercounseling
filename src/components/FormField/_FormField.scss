@@ -1,23 +1,19 @@
+@import "theme";
+@import "themeFunctions";
 .jm-FormField {
-    &__content {
-        justify-content: center;
+    &__field {
+        margin: {
+            bottom: map-get($spacers, 3);
+        }
     }
-
-    &__profile {
-        flex-grow: 0;
-        flex-basis: 33%;
+    &__label {
+        color: $primary;
     }
-
-    &__personal {
-        // Make sure the content row wraps before getting to narrow
-        flex-basis: 67%;
-        flex-shrink: 0;
-    }
-
-    &__line {
+    &__error {
+        margin: 0;
+        color: red;
         font: {
-            family: serif;
-            size: x-large;
+            size: small;
         }
     }
 }

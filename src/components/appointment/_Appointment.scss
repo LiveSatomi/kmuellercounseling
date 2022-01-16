@@ -1,3 +1,5 @@
+@import "themeFunctions";
+
 .jm-Appointment {
     &__content {
         justify-content: center;
@@ -14,10 +16,23 @@
         flex-shrink: 0;
     }
 
+    &__heading {
+        font: {
+            family: sans-serif;
+            size: xx-large;
+        }
+    }
+
     &__line {
         font: {
             family: serif;
-            size: x-large;
+            size: large;
+        }
+    }
+
+    &__form {
+        margin: {
+            bottom: map-get($spacers, 3);
         }
     }
 }

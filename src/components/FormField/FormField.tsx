@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import "../appointment/_Appointment.scss";
+import "../FormField/_FormField.scss";
 import bemNames from "util/bemnames";
 import { ErrorMessage, Field } from "formik";
 import { FormikValues } from "formik/dist/types";
@@ -16,6 +16,8 @@ type FormFieldProps = {
         | React.TextareaHTMLAttributes<HTMLTextAreaElement>) &
         FormControlProps;
     formLibrary: FormikValues;
+    /** These fields must also be touched before the error message is shown */
+    groupedFields?: string[];
 };
 class FormField extends React.Component<FormFieldProps> {
     render() {
@@ -23,14 +25,23 @@ class FormField extends React.Component<FormFieldProps> {
             <Field name={this.props.fieldName}>
                 {() => (
                     <Form.Group
-                        className="mb-3"
+                        className={bem.e("field")}
                         controlId={this.props.fieldName}
                     >
-                        <Form.Label>{this.props.fieldLabel}</Form.Label>
-
-                        <ErrorMessage name={this.props.fieldName}>
-                            {message => <p>{message}</p>}
-                        </ErrorMessage>
+                        <Form.Label className={bem.e("label")}>
+                            {this.props.fieldLabel}
+                        </Form.Label>
+                        {this.props.groupedFields === undefined ||
+                        this.props.groupedFields.every(
+                            groupedField =>
+                                this.props.formLibrary.touched[groupedField]
+                        ) ? (
+                            <ErrorMessage name={this.props.fieldName}>
+                                {message => (
+                                    <p className={bem.e("error")}>{message}</p>
+                                )}
+                            </ErrorMessage>
+                        ) : null}
                         <Form.Control
                             {...this.props.controlProps}
                             {...this.props.formLibrary.getFieldProps(

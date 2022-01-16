@@ -12,6 +12,10 @@ import FormField from "../FormField/FormField";
 const bem = bemNames.create("Appointment");
 
 type AppointmentProps = {};
+
+type AppointmentState = {
+    successfullySubmitted: boolean;
+};
 const FORM_NAME = "name";
 const FORM_EMAIL = "email";
 const FORM_PHONE = "phone";
@@ -22,7 +26,12 @@ type FormFields = {
     phone?: string;
     message?: string;
 };
-class Appointment extends React.Component<AppointmentProps> {
+class Appointment extends React.Component<AppointmentProps, AppointmentState> {
+    constructor(props: AppointmentProps) {
+        super(props);
+        this.state = { successfullySubmitted: false };
+    }
+
     formValues: FormFields = {
         [FORM_NAME]: "",
         [FORM_EMAIL]: "",
@@ -35,6 +44,7 @@ class Appointment extends React.Component<AppointmentProps> {
             "call api gateway:\nname: " + name,
             "\nemail: " + email + "\nmessage: " + message
         );
+        this.setState({ successfullySubmitted: true });
     }
 
     render() {
@@ -50,8 +60,10 @@ class Appointment extends React.Component<AppointmentProps> {
                         <Profile name={"Kathleen Mueller"} picture={profile} />
                     </Col>
                     <Col className={bem.e("appointment")}>
-                        <h2>Appointment Request</h2>
-                        <p>
+                        <h2 className={bem.e("heading")}>
+                            Appointment Request
+                        </h2>
+                        <p className={bem.e("line")}>
                             To schedule an individual, children, or family
                             therapy appointment or to obtain additional
                             information about any of these counseling services,
@@ -69,6 +81,13 @@ class Appointment extends React.Component<AppointmentProps> {
                                         "Email or Phone is required";
                                     errors[FORM_PHONE] =
                                         "Email or Phone is required";
+                                }
+                                if (
+                                    values.email &&
+                                    !values.email.includes("@")
+                                ) {
+                                    errors[FORM_EMAIL] =
+                                        "Incorrect email format";
                                 }
                                 const maxMessageLength: number = 10000;
                                 if (
@@ -95,7 +114,10 @@ class Appointment extends React.Component<AppointmentProps> {
                             }}
                         >
                             {formLibrary => (
-                                <Form onSubmit={formLibrary.handleSubmit}>
+                                <Form
+                                    className={bem.e("form")}
+                                    onSubmit={formLibrary.handleSubmit}
+                                >
                                     <FormField
                                         fieldName={FORM_NAME}
                                         fieldLabel={"Family or Individual Name"}
@@ -106,19 +128,21 @@ class Appointment extends React.Component<AppointmentProps> {
                                         fieldLabel={"Primary Email"}
                                         controlProps={{ type: "email" }}
                                         formLibrary={formLibrary}
+                                        groupedFields={[FORM_PHONE]}
                                     />
                                     <FormField
                                         fieldName={FORM_PHONE}
                                         fieldLabel={"Primary Phone"}
-                                        controlProps={{ type: "phone" }}
+                                        controlProps={{ type: "tel" }}
                                         formLibrary={formLibrary}
+                                        groupedFields={[FORM_EMAIL]}
                                     />
                                     <FormField
                                         fieldName={FORM_MESSAGE}
                                         fieldLabel={"Your Message"}
                                         controlProps={{
                                             as: "textarea",
-                                            rows: 4,
+                                            rows: 3,
                                         }}
                                         formLibrary={formLibrary}
                                     />
@@ -126,13 +150,30 @@ class Appointment extends React.Component<AppointmentProps> {
                                     <Button
                                         variant="primary"
                                         type="submit"
-                                        disabled={formLibrary.isSubmitting}
+                                        disabled={
+                                            this.state.successfullySubmitted
+                                        }
+                                        className={
+                                            this.state.successfullySubmitted
+                                                ? bem.em("button", "submitted")
+                                                : bem.em("button", "pending")
+                                        }
                                     >
-                                        Submit
+                                        {this.state.successfullySubmitted
+                                            ? "Success"
+                                            : "Submit"}
                                     </Button>
                                 </Form>
                             )}
                         </Formik>
+
+                        {/*<p className={bem.e("line")}>*/}
+                        {/*    Current clients can use the client portal to*/}
+                        {/*    schedule an appointment online.*/}
+                        {/*</p>*/}
+                        {/*<h3>*/}
+                        {/*    <a href={""}>Client Portal</a>*/}
+                        {/*</h3>*/}
                     </Col>
                 </Row>
             </Container>

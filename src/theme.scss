@@ -1,6 +1,5 @@
 $primary: cornflowerblue !default;
+$secondary: #8268ee !default;
 $navbar-light-color: $primary !default;
 $navbar-light-hover-color: darken($primary, 20%);
 $navbar-nav-link-padding-x: 1rem;
-
-@import "~bootstrap/scss/bootstrap";
