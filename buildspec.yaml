@@ -12,8 +12,9 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 cp --recursive --acl public-read ./build s3://${DEPLOY_BUCKET}/
-      - aws s3 cp --acl public-read --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./build/index.html s3://${DEPLOY_BUCKET}/
+      - aws s3 cp --recursive --acl public-read ./s3/build s3://${DEPLOY_BUCKET}/
+      - aws s3 cp --acl public-read --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./s3/build/index.html s3://${DEPLOY_BUCKET}/
+      - aws s3 cp --recursive ./lambda/build s3://${LAMBDA_BUCKET}/
 artifacts:
   files:
     - '**/*'

@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import "../FormField/_FormField.scss";
+import "./_FormField.scss";
 import bemNames from "util/bemnames";
 import { ErrorMessage, Field } from "formik";
 import { FormikValues } from "formik/dist/types";
@@ -33,7 +33,7 @@ class FormField extends React.Component<FormFieldProps> {
                         </Form.Label>
                         {this.props.groupedFields === undefined ||
                         this.props.groupedFields.every(
-                            groupedField =>
+                            (groupedField: string) =>
                                 this.props.formLibrary.touched[groupedField]
                         ) ? (
                             <ErrorMessage name={this.props.fieldName}>

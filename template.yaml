@@ -83,7 +83,7 @@ Resources:
               InputArtifacts:
                 - Name: *sourceArtifact
               OutputArtifacts:
-                - Name:
+                - Name: &buildArtifact
                     Fn::Join:
                       - *delimiter
                       - - *resourceName
@@ -91,6 +91,30 @@ Resources:
               Configuration:
                 ProjectName:
                   Ref: SiteCodeBuild
+        - Name:
+            Fn::Join:
+              - *delimiter
+              - - *resourceName
+                - "deploy-stage"
+          Actions:
+            - Name:
+                Fn::Join:
+                  - *delimiter
+                  - - *resourceName
+                    - "deploy-action"
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CodeDeploy
+              InputArtifacts:
+                - Name: *buildArtifact
+              OutputArtifacts: []
+              Configuration:
+                ApplicationName:
+                  Ref: PipelineDeployApplicaiton
+                DeploymentGroupName:
+                  Ref: PipelineDeployGroup
   SitePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -148,6 +172,14 @@ Resources:
           - *delimiter
           - - *resourceName
             - "pipeline-artifact"
+  LambdaArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+          - *delimiter
+          - - *resourceName
+            - "lambda-artifact"
   SiteCodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -160,6 +192,10 @@ Resources:
             Type: PLAINTEXT
             Value:
               Ref: SiteBucket
+          - Name: LAMBDA_BUCKET
+            Type: PLAINTEXT
+            Value:
+              Ref: LambdaArtifactBucket
         Image: "aws/codebuild/standard:5.0"
         Type: LINUX_CONTAINER
       Name:
@@ -232,3 +268,43 @@ Resources:
                   - "cloudfront:CreateInvalidation"
                 Resource:
                   - "*"
+  PipelineDeployApplicaiton:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName:
+        Fn::Join:
+          - *delimiter
+          - - *resourceName
+            - "deploy-application"
+      ComputePlatform: Lambda
+  PipelineDeployGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName:
+        Ref: PipelineDeployApplicaiton
+      Deployment:
+        Revision:
+          RevisionType: S3
+          S3Location:
+            Bucket:
+              Ref: LambdaArtifactBucket
+            BundleType: zip
+            Key: forwardMessage.zip
+      ServiceRoleArn:
+        Fn::GetAtt:
+          - CodeDeployRole
+          - Arn
+  CodeDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambdaLimited

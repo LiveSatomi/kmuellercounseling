@@ -6,7 +6,7 @@ import Profile from "components/profile/Profile";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./_Appointment.scss";
 import bemNames from "util/bemnames";
-import { Formik } from "formik";
+import { Formik, FormikValues } from "formik";
 import FormField from "../FormField/FormField";
 
 const bem = bemNames.create("Appointment");
@@ -113,7 +113,7 @@ class Appointment extends React.Component<AppointmentProps, AppointmentState> {
                                 setSubmitting(false);
                             }}
                         >
-                            {formLibrary => (
+                            {(formLibrary:FormikValues) => (
                                 <Form
                                     className={bem.e("form")}
                                     onSubmit={formLibrary.handleSubmit}

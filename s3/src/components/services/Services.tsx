@@ -39,10 +39,10 @@ const Services: React.FC = () => {
                     <p>
                         I work with a wide range of emotional and behavioral
                         issues providing services ranging from depression and
-                        anxiety counseling to addiction and recovery. In a comfortable and supportive
-                        atmosphere, I offer a highly personalized approach
-                        tailored to your individual needs to help attain your
-                        personal growth potential.
+                        anxiety counseling to addiction and recovery. In a
+                        comfortable and supportive atmosphere, I offer a highly
+                        personalized approach tailored to your individual needs
+                        to help attain your personal growth potential.
                     </p>
                     <h3>Rates</h3>
                     <p>$150 per 50-minute session</p>
