@@ -6,11 +6,13 @@
     "devDependencies": {
         "husky": "^3.0.9",
         "lint-staged": "^9.4.2",
-        "prettier": "1.18.2"
+        "prettier": "1.18.2",
+        "js-yaml": "^3.13.1"
     },
     "scripts": {
         "build": "npm --prefix s3 run build; npm --prefix lambda run build",
-        "postinstall": "npm --prefix s3 install; npm --prefix lambda install"
+        "postinstall": "npm --prefix s3 install; npm --prefix lambda install",
+        "convertTemplate": "js-yaml template.yaml > template.json"
     },
     "husky": {
         "hooks": {

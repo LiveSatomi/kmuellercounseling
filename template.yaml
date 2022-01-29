@@ -282,14 +282,9 @@ Resources:
     Properties:
       ApplicationName:
         Ref: PipelineDeployApplicaiton
-      Deployment:
-        Revision:
-          RevisionType: S3
-          S3Location:
-            Bucket:
-              Ref: LambdaArtifactBucket
-            BundleType: zip
-            Key: forwardMessage.zip
+      DeploymentStyle:
+        DeploymentOption: WITH_TRAFFIC_CONTROL
+        DeploymentType: BLUE_GREEN
       ServiceRoleArn:
         Fn::GetAtt:
           - CodeDeployRole
