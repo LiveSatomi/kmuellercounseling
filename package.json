@@ -10,9 +10,9 @@
         "js-yaml": "^3.13.1"
     },
     "scripts": {
-        "build": "npm --prefix s3 run build; npm --prefix lambda run build",
+        "convertTemplate": "js-yaml template.yaml > template.json",
         "postinstall": "npm --prefix s3 install; npm --prefix lambda install",
-        "convertTemplate": "js-yaml template.yaml > template.json"
+        "build": "npm --prefix s3 run build; npm --prefix lambda run build"
     },
     "husky": {
         "hooks": {

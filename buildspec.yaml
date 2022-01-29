@@ -5,10 +5,10 @@ phases:
         nodejs: 12
   pre_build:
     commands:
-      - npm install --production
+      - whoami
+      - NODE_ENV=production npm install --unsafe-perm
   build:
     commands:
-      - CI=true npm run test
       - npm run build
   post_build:
     commands:
