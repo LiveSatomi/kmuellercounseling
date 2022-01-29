@@ -5,7 +5,7 @@ phases:
         nodejs: 12
   pre_build:
     commands:
-      - npm install
+      - npm install --production
   build:
     commands:
       - CI=true npm run test
