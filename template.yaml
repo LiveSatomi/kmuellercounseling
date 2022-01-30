@@ -260,6 +260,15 @@ Resources:
                             - SiteBucket
                             - Arn
                         - /*
+                  - Fn::GetAtt:
+                      - LambdaArtifactBucket
+                      - Arn
+                  - Fn::Join:
+                      - ''
+                      - - Fn::GetAtt:
+                            - LambdaArtifactBucket
+                            - Arn
+                        - /*
               - Effect: Allow
                 Action:
                   - "logs:CreateLogGroup"
