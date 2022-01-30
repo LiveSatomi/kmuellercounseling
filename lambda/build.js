@@ -17,3 +17,9 @@ console.log(
     spawnSync("zip", ["-j", "build/forwardMessage.zip", "build/forwardMessage.js"]).stdout
   ).toString()
 );
+
+console.log(
+  new Buffer.from(
+    spawnSync("zip", ["-j", "build/forwardMessage.zip", "build/appspec.yml"]).stdout
+  ).toString()
+);

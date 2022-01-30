@@ -155,6 +155,8 @@ Resources:
                 Action:
                   - "codestar-connections:UseConnection"
                 Resource: "*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCodeDeployDeployerAccess
   PipelineSourceConnection:
     Type: AWS::CodeStarConnections::Connection
     Properties:
@@ -312,3 +314,4 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambdaLimited
+        - arn:aws:iam::aws:policy/AWSCodeDeployDeployerAccess
