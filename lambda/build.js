@@ -20,6 +20,6 @@ console.log(
 
 console.log(
   new Buffer.from(
-    spawnSync("zip", ["-j", "build/forwardMessage.zip", "build/appspec.yml"]).stdout
+    spawnSync("cp", ["appspec.yml", "build/appspec.yml"]).stdout
   ).toString()
 );
