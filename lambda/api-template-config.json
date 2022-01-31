@@ -1,0 +1,8 @@
+{
+  "Parameters" : {
+    "S3Bucket" : "",
+    "S3Key" : "",
+    "LambdaRole" : "",
+    "ProjectName" : ""
+  }
+}

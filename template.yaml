@@ -106,15 +106,48 @@ Resources:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
-                Provider: CodeDeploy
+                Provider: CloudFormation
               InputArtifacts:
                 - Name: *buildArtifact
               OutputArtifacts: []
               Configuration:
-                ApplicationName:
-                  Ref: PipelineDeployApplicaiton
-                DeploymentGroupName:
-                  Ref: PipelineDeployGroup
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM
+                RoleArn:
+                  Fn::GetAtt:
+                    - CodeDeployRole
+                    - Arn
+                StackName:
+                  Fn::Join:
+                    - *delimiter
+                    - - *resourceName
+                      - "stack-site-api"
+                ParameterOverrides:
+                  Fn::Join:
+                    - ''
+                    - - '{"S3Bucket": "'
+                      - Ref: LambdaArtifactBucket
+                      - '","S3Key":"'
+                      - "forwardMessage.zip"
+                      - '","LambdaRole":"'
+                      - Fn::GetAtt:
+                          - LambdaRole
+                          - Arn
+                      - '","ProjectName":"'
+                      - *resourceName
+                      - '"}'
+                TemplatePath:
+                  Fn::Join:
+                    - ''
+                    - - *buildArtifact
+                      - "::"
+                      - "api-template.yaml"
+                TemplateConfiguration:
+                  Fn::Join:
+                    - ''
+                    - - *buildArtifact
+                      - "::"
+                      - "api-template-config.json"
   SitePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -155,8 +188,12 @@ Resources:
                 Action:
                   - "codestar-connections:UseConnection"
                 Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                Resource: "*"
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSCodeDeployDeployerAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
   PipelineSourceConnection:
     Type: AWS::CodeStarConnections::Connection
     Properties:
@@ -309,9 +346,37 @@ Resources:
           - Effect: "Allow"
             Principal:
               Service:
-                - "codedeploy.amazonaws.com"
+                - "cloudformation.amazonaws.com"
             Action:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambdaLimited
         - arn:aws:iam::aws:policy/AWSCodeDeployDeployerAccess
+  CloudFormationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "cloudformation.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole

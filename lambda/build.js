@@ -20,6 +20,12 @@ console.log(
 
 console.log(
   new Buffer.from(
-    spawnSync("cp", ["appspec.yml", "build/appspec.yml"]).stdout
+    spawnSync("cp", ["api-template.yaml", "build/api-template.yaml"]).stdout
+  ).toString()
+);
+
+console.log(
+  new Buffer.from(
+    spawnSync("cp", ["api-template-config.json", "build/api-template-config.json"]).stdout
   ).toString()
 );

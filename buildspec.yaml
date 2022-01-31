@@ -16,6 +16,5 @@ phases:
       - aws s3 cp --recursive ./lambda/build s3://${LAMBDA_BUCKET}/
 artifacts:
   files:
-    - 'appspec.yml'
-    - 'appspec.yaml'
-  base-directory: lambda
+    - '**/*'
+  base-directory: lambda/build

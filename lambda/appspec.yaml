@@ -1,9 +1,0 @@
-version: 0.0
-Resources:
-  - kmuellercounseling-mail:
-      Type: AWS::Lambda::Function
-      Properties:
-        Name: "kmuellercounseling-mail"
-        Alias: "kmuellercounseling-mail"
-        CurrentVersion: "1" # Specify the current version of your Lambda function
-        TargetVersion: "1" # Specify the version of your Lambda function to deploy
